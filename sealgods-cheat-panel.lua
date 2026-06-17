@@ -16,8 +16,8 @@ ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
 
 local MainFrame = Instance.new("Frame")
 MainFrame.Name = "MainFrame"
-MainFrame.Size = UDim2.new(0, 220, 0, 330)
-MainFrame.Position = UDim2.new(0.5, -110, 0.5, -140)
+MainFrame.Size = UDim2.new(0, 220, 0, 380)
+MainFrame.Position = UDim2.new(0.5, -110, 0.5, -170)
 MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 MainFrame.BorderSizePixel = 0
 MainFrame.Parent = ScreenGui
@@ -109,15 +109,28 @@ SpeedToggle.TextScaled = true
 SpeedToggle.Font = Enum.Font.Gotham
 SpeedToggle.Parent = MainFrame
 
+local AntiDeathToggle = Instance.new("TextButton")
+AntiDeathToggle.Size = UDim2.new(1, -20, 0, 45)
+AntiDeathToggle.Position = UDim2.new(0, 10, 0, 280)
+AntiDeathToggle.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+AntiDeathToggle.Text = "anti-damage"
+AntiDeathToggle.TextColor3 = Color3.new(1,1,1)
+AntiDeathToggle.TextScaled = true
+AntiDeathToggle.Font = Enum.Font.Gotham
+AntiDeathToggle.Parent = MainFrame
+
 local flying = false
 local espEnabled = false
 local noclipEnabled = false
 local speedBoostEnabled = false
+local antiDeathEnabled = false
+
 local flySpeed = 70
 local connections = {}
 local espObjects = {}
 local rainbowHue = 0
 local bodyVelocity, bodyGyro
+local antiDeathConnection
 
 local function startFly()
 	if flying then return end
@@ -269,6 +282,26 @@ local function disableSpeedBoost()
 	end
 end
 
+local function enableAntiDeath()
+	antiDeathEnabled = true
+	AntiDeathToggle.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+	
+	antiDeathConnection = RunService.RenderStepped:Connect(function()
+		if antiDeathEnabled and Humanoid and Humanoid.Parent then
+			Humanoid.Health = Humanoid.MaxHealth
+		end
+	end)
+end
+
+local function disableAntiDeath()
+	antiDeathEnabled = false
+	AntiDeathToggle.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+	if antiDeathConnection then
+		antiDeathConnection:Disconnect()
+		antiDeathConnection = nil
+	end
+end
+
 FlyToggle.MouseButton1Click:Connect(function()
 	if flying then stopFly() else startFly() end
 end)
@@ -285,13 +318,25 @@ SpeedToggle.MouseButton1Click:Connect(function()
 	if speedBoostEnabled then disableSpeedBoost() else enableSpeedBoost() end
 end)
 
+AntiDeathToggle.MouseButton1Click:Connect(function()
+	if antiDeathEnabled then 
+		disableAntiDeath() 
+	else 
+		enableAntiDeath() 
+	end
+end)
+
 LocalPlayer.CharacterAdded:Connect(function(newChar)
 	Character = newChar
 	Humanoid = newChar:WaitForChild("Humanoid")
 	RootPart = newChar:WaitForChild("HumanoidRootPart")
+	
 	if flying then stopFly() end
 	if speedBoostEnabled then
 		Humanoid.WalkSpeed = originalWalkSpeed * 2
+	end
+	if antiDeathEnabled then
+		enableAntiDeath()
 	end
 end)
 
