@@ -378,7 +378,7 @@ local function getMurdererScreenPosition()
 		return nil
 	end
 
-	return Vector2.new(screenPos.X + 45, screenPos.Y)
+	return Vector2.new(screenPos.X, screenPos.Y) -- return Vector2.new(screenPos.X + 45, screenPos.Y)
 end
 
 local function performScriptTest2()
