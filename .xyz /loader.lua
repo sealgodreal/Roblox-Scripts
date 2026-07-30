@@ -134,7 +134,7 @@ task.spawn(function()
     task.wait(0.35)
 
     if game.PlaceId == 6839171747 then -- doors
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/sealgodreal/Roblox-Scripts/.xyz/main/GameScripts/.xyz_doors.lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/sealgodreal/Roblox-Scripts/refs/heads/main/.xyz%20/GameScripts/.xyz_doors.lua"))()
     end
 
     loader:Destroy()
