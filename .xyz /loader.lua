@@ -133,9 +133,8 @@ task.spawn(function()
     tween(bar, {BackgroundTransparency = 1}, 0.3)
     task.wait(0.35)
 
-    if game.PlaceId == 6516141723 then -- doors
+    if game.PlaceId == 6839171747 then -- doors
         loadstring(game:HttpGet("https://raw.githubusercontent.com/sealgodreal/Roblox-Scripts/.xyz/main/GameScripts/.xyz_doors.lua"))()
-        print("test")
     end
 
     loader:Destroy()
